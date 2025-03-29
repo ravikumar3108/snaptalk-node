@@ -59,31 +59,31 @@ export const signUpUser = async (req, res) => {
 }
 
 export const loginUser = async (req, res) => {
-    res.json({message:"login"})
-    // try {
-    //     const { username, password } = req.body
-    //     const existUser = await User.findOne({ username: username })
-    //     const isPasswordCoorect = await bcrypt.compare(password, existUser?.password || "");
+    // res.json({message:"login"})
+    try {
+        const { username, password } = req.body
+        const existUser = await User.findOne({ username: username })
+        const isPasswordCoorect = await bcrypt.compare(password, existUser?.password || "");
 
-    //     if (!existUser || !isPasswordCoorect) {
-    //         res.json({ error: "username and Password is incorrect", })
-    //     }
-    //     else {
-    //         generateToken(existUser._id)
-    //         res.status(200).json({
-    //             status: true,
-    //             user: existUser,
-    //             _id: existUser._id,
-    //             fullname: existUser.fullname,
-    //             username: existUser.username,
-    //             token: token
-    //         })
+        if (!existUser || !isPasswordCoorect) {
+            res.json({ error: "username and Password is incorrect", })
+        }
+        else {
+            generateToken(existUser._id)
+            res.status(200).json({
+                status: true,
+                user: existUser,
+                _id: existUser._id,
+                fullname: existUser.fullname,
+                username: existUser.username,
+                token: token
+            })
 
-    //     }
-    // } catch (err) {
-    //     console.log("Errror in login", err)
-    //     res.status(500).json(err)
-    // }
+        }
+    } catch (err) {
+        console.log("Errror in login", err)
+        res.status(500).json(err)
+    }
 }
 
 export const logoutUser = async (req, res) => {
