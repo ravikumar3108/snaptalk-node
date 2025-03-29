@@ -3,7 +3,7 @@ import { loginUser, signUpUser, logoutUser, profile ,dumy} from '../controllers/
 import { protectRoute } from '../middlewares/protectRoutes.js';
 const router = express.Router()
 
-router.post("/login", loginUser)
+router.get("/login", loginUser)
 router.get("/dumy", dumy)
 router.post("/signup", signUpUser)
 router.post("/logout", logoutUser)
