@@ -5,7 +5,7 @@ import cors from 'cors'
 import authRoutes from "./routes/authRoutes.js"
 import messageRoute from './routes/messageRoutes.js'
 import userRoute from "./routes/usersRoutes.js"
-import { connectToMongodb } from './db/dbConnection.js';
+import './db/dbConnection.js';
 // cookie parser is install to get token to cookies 
 import { app, server } from './socket/socket.js';
 
@@ -33,6 +33,5 @@ app.get("/", (req, res) => {
 })
 
 server.listen(PORT, () => {
-  connectToMongodb()
   console.log(`Server is running on ${PORT}`)
 })
