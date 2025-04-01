@@ -62,7 +62,7 @@ export const loginUser = async (req, res) => {
     // res.json({message:"login"})
     try {
         const { username, password } = req.body
-        const existUser = await User.findOne({ username: username })
+        const existUser = await User.findOne({ username : username })
         const isPasswordCoorect = await bcrypt.compare(password, existUser?.password || "");
 
         if (!existUser || !isPasswordCoorect) {
