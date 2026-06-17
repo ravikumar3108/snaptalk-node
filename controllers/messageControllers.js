@@ -22,6 +22,8 @@ export const sendMessage = async (req, res) => {
       senderId,
       receiverId,
       message,
+      delivered: true,
+      isRead: false,
     });
 
     if (newMessage) {
@@ -47,23 +49,61 @@ export const sendMessage = async (req, res) => {
   }
 };
 
+// export const getMessage = async (req, res) => {
+//   try {
+//     const { id: userToChatId } = req.params;
+//     const { _id: senderId } = req.user;
+
+//     const conversation = await Conversation.findOne({
+//       participants: { $all: [senderId, userToChatId] },
+//     }).populate("message");
+
+//     if (!conversation) {
+//       return res.status(200).json([]);
+//     }
+//     const messages = conversation.message;
+//     res.status(201).json(messages);
+//     // console.log(conversation.message)
+//   } catch (error) {
+//     console.log("Error in get message controller", error);
+//     res.status(400).json(error);
+//   }
+// };
+
 export const getMessage = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
     const { _id: senderId } = req.user;
 
+    await Message.updateMany(
+      {
+        senderId: userToChatId,
+        receiverId: senderId,
+        isRead: false,
+      },
+      {
+        isRead: true,
+      },
+    );
+
+    const receiverSocketId = getReceiverSocketId(userToChatId);
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("messagesRead");
+    }
+
     const conversation = await Conversation.findOne({
-      participants: { $all: [senderId, userToChatId] },
+      participants: {
+        $all: [senderId, userToChatId],
+      },
     }).populate("message");
 
     if (!conversation) {
       return res.status(200).json([]);
     }
-    const messages = conversation.message;
-    res.status(201).json(messages);
-    // console.log(conversation.message)
+
+    res.json(conversation.message);
   } catch (error) {
-    console.log("Error in get message controller", error);
-    res.status(400).json(error);
+    console.log(error);
   }
 };

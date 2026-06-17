@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import messageRoute from "./routes/messageRoutes.js";
 import userRoute from "./routes/usersRoutes.js";
+import statusRoutes from "./routes/statusRoutes.js";
 import "./db/dbConnection.js";
 // cookie parser is install to get token to cookies
 import { app, server } from "./socket/socket.js";
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoute);
 app.use("/api/users", userRoute);
+app.use("/api/status", statusRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "GET", status: true });
