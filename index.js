@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8000;
 // const app = express()
 
 const corsOptions = {
-  origin: "*", // Allow only your frontend
+  origin: ["http://localhost:5173", "https://snaptalk-app.vercel.app"], // Allow only your frontend
   methods: "GET,POST,PUT,DELETE",
   credentials: true, // If using cookies or authentication
 };
